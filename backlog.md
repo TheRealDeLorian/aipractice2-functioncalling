@@ -1,0 +1,1 @@
+- make one that gets user location and see if the ai will use it

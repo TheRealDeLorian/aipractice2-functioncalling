@@ -55,7 +55,7 @@ def call_function(name, args):
     if name == "send_email":
         return send_email(**args)
 
-input_messages = [{"role": "user", "content": "Can you send an email to JoeShmoe21@gmail.com letting him know we can go hiking today? "}]
+input_messages = [{"role": "user", "content": "Can you check the weather in West Jordan, UT for me? If its above 70, email joeyboboey@gmail.com and tell him we can go hiking. Otherwise, email julibobooley34@hotmail.net and tell her I want to take her on a video game date."}]
 
 response = client.responses.create(
     model="gpt-4.1",
@@ -68,6 +68,7 @@ for tool_call in response.output:
     if tool_call.type != "function_call":
         continue
 
+    input_messages.append(tool_call)
     name = tool_call.name
     args = json.loads(tool_call.arguments)
 
@@ -78,6 +79,8 @@ for tool_call in response.output:
         "call_id": tool_call.call_id,
         "output": str(result)
     })
+    
+print(input_messages)
     
 response = client.responses.create(
     model="gpt-4.1",
